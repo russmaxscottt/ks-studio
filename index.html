@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="tr" data-theme="orange-dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#10151f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="K’s Studio" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>K’s Studio Ultra</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-180.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="splash">
+    <div class="splash-card">
+      <div class="splash-logo">⭐</div>
+      <div class="splash-name">K’s Studio</div>
+      <div class="splash-sub">Touch + Keyboard DAW Prototype</div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">⭐</div>
+        <div class="brand-name">K’s Studio</div>
+      </div>
+      <button class="side active" data-page="rack">Channel Rack</button>
+      <button class="side" data-page="piano">Piano Roll</button>
+      <button class="side" data-page="playlist">Playlist</button>
+      <button class="side" data-page="mixer">Mixer</button>
+      <button class="side" data-page="browser">Sample Browser</button>
+      <button class="side" data-page="synths">Synth Library</button>
+      <button class="side" data-page="vocal">Vocal Chain</button>
+      <button class="side" data-page="export">Export</button>
+      <button class="side" data-page="settings">Themes</button>
+    </aside>
+
+    <section class="main">
+      <header class="topbar">
+        <div class="transport">
+          <button id="playBtn" class="green" title="Space">▶</button>
+          <button id="stopBtn" title="Esc">■</button>
+          <button id="recBtn" class="red" title="R">●</button>
+          <label>BPM <input id="bpm" type="number" min="60" max="220" value="140"></label>
+          <label>Scale
+            <select id="scaleSelect">
+              <option value="minor">Minor</option>
+              <option value="major">Major</option>
+              <option value="harmonicMinor">Harmonic Minor</option>
+              <option value="pentatonic">Pentatonic</option>
+            </select>
+          </label>
+          <label>Root
+            <select id="rootSelect">
+              <option>C</option><option>C#</option><option>D</option><option>D#</option><option>E</option><option>F</option>
+              <option>F#</option><option>G</option><option>G#</option><option>A</option><option>A#</option><option>B</option>
+            </select>
+          </label>
+          <button id="saveProjectBtn">Save</button>
+          <button id="loadProjectBtn">Load</button>
+        </div>
+        <div class="screen">PAT 01 | 4/4 | K’s Studio Ultra</div>
+      </header>
+
+      <nav class="mobile-tabs">
+        <button data-page="rack">Rack</button><button data-page="piano">Piano</button><button data-page="playlist">Playlist</button><button data-page="mixer">Mixer</button>
+      </nav>
+
+      <section class="page active" id="rack">
+        <div class="panel">
+          <div class="section-head">
+            <h2>Channel Rack</h2>
+            <div class="controls">
+              <button id="addSynth">+ Synth</button>
+              <button id="addMelody">+ Melody</button>
+              <button id="duplicatePattern">Duplicate Pattern</button>
+            </div>
+          </div>
+          <div id="sequencer"></div>
+        </div>
+      </section>
+
+      <section class="page" id="piano">
+        <div class="panel">
+          <div class="section-head">
+            <h2>Channel Piano Roll</h2>
+            <div class="controls">
+              <label>Channel <select id="channelSelect"></select></label>
+              <button id="scaleLockBtn">Scale Lock: ON</button>
+              <button id="chordBtn">Generate Chords</button>
+              <button id="clearRollBtn">Clear</button>
+            </div>
+          </div>
+          <div class="piano-help">Dokunmatik: hücreye dokun. Mouse: tıkla/sürükle. Klavye: A W S E D F T G Y H U J notaları çalar.</div>
+          <div class="piano-roll-wrap">
+            <div class="piano-roll" id="pianoRoll"></div>
+          </div>
+          <h2>Synth Keyboard</h2>
+          <div class="keyboard" id="keyboard"></div>
+          <div class="controls">
+            <label>Wave <select id="waveform"><option>sawtooth</option><option>sine</option><option>square</option><option>triangle</option></select></label>
+            <label>Attack <input id="attack" type="range" min="0" max="1" step="0.01" value="0.02"></label>
+            <label>Release <input id="release" type="range" min="0.05" max="3" step="0.01" value="0.35"></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="playlist">
+        <div class="panel">
+          <div class="section-head">
+            <h2>Playlist / Arrangement</h2>
+            <div class="controls">
+              <button id="addClipBtn">+ Clip</button>
+              <button id="clearPlaylistBtn">Clear</button>
+            </div>
+          </div>
+          <div class="playlist-grid" id="playlistGrid"></div>
+        </div>
+      </section>
+
+      <section class="page" id="mixer">
+        <div class="panel">
+          <h2>Mixer Channels + FX Chains</h2>
+          <div class="mixer-board" id="mixerBoard"></div>
+        </div>
+      </section>
+
+      <section class="page" id="browser">
+        <div class="panel">
+          <div class="section-head">
+            <h2>Sample Browser</h2>
+            <label>Upload Samples <input id="sampleUpload" type="file" accept="audio/*" multiple></label>
+          </div>
+          <div class="browser-grid">
+            <div>
+              <h3>Kicks</h3><div class="sample-list" id="kicksList"></div>
+            </div>
+            <div>
+              <h3>808s</h3><div class="sample-list" id="eightList"></div>
+            </div>
+            <div>
+              <h3>Snares / Claps</h3><div class="sample-list" id="snareList"></div>
+            </div>
+            <div>
+              <h3>Hats / Percs</h3><div class="sample-list" id="hatList"></div>
+            </div>
+            <div>
+              <h3>FX / Vocals</h3><div class="sample-list" id="fxList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="synths">
+        <div class="panel">
+          <h2>Synth Library</h2>
+          <div class="preset-grid" id="presetGrid"></div>
+          <h2>808 Editor</h2>
+          <div class="controls vertical">
+            <label>808 Tune <input id="bassTune" type="range" min="30" max="110" value="55"></label>
+            <label>Glide <input id="bassGlide" type="range" min="0" max="1" step="0.01" value="0.25"></label>
+            <label>Distortion <input id="bassDist" type="range" min="0" max="1" step="0.01" value="0.25"></label>
+            <button id="test808">Test 808</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="vocal">
+        <div class="panel">
+          <h2>Vocal Recording + AutoTune + Chains</h2>
+          <div class="controls">
+            <button id="startRec2" class="red">Record Vocal</button>
+            <label><input id="autotune" type="checkbox"> AutoTune Sim</label>
+            <label>Retune <input id="retune" type="range" min="0" max="1" step="0.01" value="0.65"></label>
+            <select id="vocalPreset">
+              <option>Clean Vocal</option>
+              <option>Trap Lead Vocal</option>
+              <option>R&B Smooth Vocal</option>
+              <option>Ye/808s Robotic</option>
+              <option>Adlib Wide</option>
+            </select>
+          </div>
+          <audio id="recording" controls></audio>
+          <div class="chain" id="vocalChain"></div>
+        </div>
+      </section>
+
+      <section class="page" id="export">
+        <div class="panel">
+          <h2>Export</h2>
+          <div class="controls">
+            <button id="exportWavBtn">Export WAV Demo</button>
+            <button id="exportMidiBtn">Export MIDI-like JSON</button>
+            <button id="exportStemsBtn">Export Stems JSON</button>
+          </div>
+          <a id="downloadLink"></a>
+          <p>WAV export demo sinyal üretir. MP3/STEMS profesyonel render için native encoder gerekir; proje verisini JSON olarak dışa aktarabilirsin.</p>
+        </div>
+      </section>
+
+      <section class="page" id="settings">
+        <div class="panel">
+          <h2>Themes</h2>
+          <p>Birebir FL Studio temaları değil; telif nedeniyle FL Studio’dan ilham alan tema setleri.</p>
+          <div class="theme-grid">
+            <button data-theme="orange-dark">Orange Dark</button>
+            <button data-theme="classic-grey">Classic Grey</button>
+            <button data-theme="midnight">Midnight</button>
+            <button data-theme="neon-green">Neon Green</button>
+            <button data-theme="purple-wave">Purple Wave</button>
+            <button data-theme="ice-light">Ice Light</button>
+            <button data-theme="gold-lux">Gold Lux</button>
+            <button data-theme="redline">Redline</button>
+            <button data-theme="blue-steel">Blue Steel</button>
+            <button data-theme="amoled">AMOLED</button>
+          </div>
+          <h2>Keyboard Shortcuts</h2>
+          <div class="shortcuts">
+            <span>Space: Play/Stop</span><span>R: Record</span><span>Esc: Stop</span>
+            <span>A W S E D F T G Y H U J: Piano</span><span>1-9: Channel seç</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+  <script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("./service-worker.js");</script>
+</body>
+</html>

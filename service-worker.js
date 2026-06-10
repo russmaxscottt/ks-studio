@@ -1,0 +1,4 @@
+const CACHE_NAME="ks-studio-ultra-v3";
+const ASSETS=["./","./index.html","./styles.css","./app.js","./manifest.json","./icons/icon-180.png","./icons/icon-192.png","./icons/icon-512.png"];
+self.addEventListener("install",e=>e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS))));
+self.addEventListener("fetch",e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
